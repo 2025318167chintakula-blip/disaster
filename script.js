@@ -1,0 +1,1 @@
+function toggleNav(){const n=document.querySelector('nav');if(window.innerWidth<=800){n.style.display=n.style.display==='flex'?'none':'flex';n.style.flexDirection='column';}}
