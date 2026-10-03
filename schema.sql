@@ -1,5 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
+-- Core indexes keep command-center queries fast as the dataset grows.
+
 CREATE TABLE IF NOT EXISTS app_users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email TEXT UNIQUE NOT NULL,
@@ -71,7 +73,7 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 );
 
 INSERT INTO app_users (email,name,password_hash)
-VALUES ('demo@sentinel.local','Demo Operator','local-demo-password')
+VALUES ('demo@sentinel.local','Demo Operator','scrypt$16384$8$1$sentinel-demo-salt-2026$T1nPZuL5pq1zn/7OejYp21CcS8BjQONDWyZyc7Ktn1e7lhFjET45ECMDM9gMLmeo5X2WEZH8LM4alZPyvL7FnA==')
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO sensors (name,category,value,unit,status,location,battery)
@@ -95,3 +97,14 @@ WHERE NOT EXISTS (SELECT 1 FROM response_teams);
 INSERT INTO incidents (title,location,severity,status)
 SELECT 'Flood Warning','Yamuna Sector 4','CRITICAL','ACTIVE'
 WHERE NOT EXISTS (SELECT 1 FROM incidents);
+
+
+CREATE INDEX IF NOT EXISTS idx_incidents_status_created ON incidents(status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_sensors_status_category ON sensors(status, category);
+CREATE INDEX IF NOT EXISTS idx_dispatches_status_created ON dispatches(status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_created ON audit_logs(created_at DESC);
+
+INSERT INTO dispatches (incident_id, team_id, mission, destination, priority, status)
+SELECT i.id, t.id, 'Flood perimeter assessment', i.location, 'CRITICAL', 'ACTIVE'
+FROM incidents i CROSS JOIN LATERAL (SELECT id FROM response_teams WHERE name='Alpha Rescue Unit' LIMIT 1) t
+WHERE NOT EXISTS (SELECT 1 FROM dispatches);
