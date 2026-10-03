@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 
 INSERT INTO app_users (email,name,password_hash)
 VALUES ('demo@sentinel.local','Demo Operator','scrypt$16384$8$1$sentinel-demo-salt-2026$T1nPZuL5pq1zn/7OejYp21CcS8BjQONDWyZyc7Ktn1e7lhFjET45ECMDM9gMLmeo5X2WEZH8LM4alZPyvL7FnA==')
-ON CONFLICT (email) DO NOTHING;
+ON CONFLICT (email) DO UPDATE SET name=EXCLUDED.name, password_hash=EXCLUDED.password_hash;
 
 INSERT INTO sensors (name,category,value,unit,status,location,battery)
 SELECT * FROM (VALUES
