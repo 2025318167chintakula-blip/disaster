@@ -1,0 +1,1 @@
+ALTER TABLE incidents ADD COLUMN IF NOT EXISTS created_by TEXT
