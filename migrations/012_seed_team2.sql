@@ -1,1 +1,0 @@
-INSERT INTO response_teams (name, specialty, location, status, members) SELECT 'Bravo Medical Unit','Medical Support','Sector 2','AVAILABLE',5 WHERE NOT EXISTS (SELECT 1 FROM response_teams WHERE name = 'Bravo Medical Unit')
