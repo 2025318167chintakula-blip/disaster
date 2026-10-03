@@ -1,0 +1,1 @@
+INSERT INTO response_teams (name, specialty, location, status, members) SELECT 'Charlie Fire Unit','Fire Response','Industrial B','EN ROUTE',7 WHERE NOT EXISTS (SELECT 1 FROM response_teams WHERE name = 'Charlie Fire Unit')
