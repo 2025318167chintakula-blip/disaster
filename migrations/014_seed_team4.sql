@@ -1,1 +1,0 @@
-INSERT INTO response_teams (name, specialty, location, status, members) SELECT 'Delta Search Unit','Search & Rescue','Zone 7','AVAILABLE',6 WHERE NOT EXISTS (SELECT 1 FROM response_teams WHERE name = 'Delta Search Unit')
