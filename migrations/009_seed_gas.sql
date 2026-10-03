@@ -1,0 +1,1 @@
+INSERT INTO sensors (name, category, value, unit, status, location, battery) SELECT 'Gas Sensor S-305','GAS','4.2','ppm','ONLINE','Industrial Zone B',91 WHERE NOT EXISTS (SELECT 1 FROM sensors WHERE name = 'Gas Sensor S-305')
