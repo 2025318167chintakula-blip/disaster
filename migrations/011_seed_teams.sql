@@ -1,0 +1,1 @@
+INSERT INTO response_teams (name, specialty, location, status, members) SELECT 'Alpha Response Unit','Flood Rescue','Sector 4','DEPLOYED',6 WHERE NOT EXISTS (SELECT 1 FROM response_teams WHERE name = 'Alpha Response Unit')
