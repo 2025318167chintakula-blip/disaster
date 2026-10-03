@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS incidents (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  title TEXT NOT NULL,
-  location TEXT NOT NULL,
-  severity TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'ACTIVE',
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-)
