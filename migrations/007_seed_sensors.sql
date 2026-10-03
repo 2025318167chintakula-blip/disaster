@@ -1,1 +1,0 @@
-INSERT INTO sensors (name, category, value, unit, status, location, battery) SELECT 'Water Level Sensor','WATER','82','cm','ONLINE','Yamuna Sector 4',94 WHERE NOT EXISTS (SELECT 1 FROM sensors WHERE name = 'Water Level Sensor')
