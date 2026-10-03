@@ -49,4 +49,19 @@ Change this demo credential before using the project outside a classroom/demo en
 ## Architecture
 Browser → Express/Node.js → PostgreSQL
 
-The original Hatchable API files remain in `api/` for the deployed Hatchable version. Local development uses `server.js` and the same frontend routes (`/api/*`), so the UI workflows remain consistent.
+Local development is intentionally self-contained. The application uses Express for the web/API layer and PostgreSQL for authentication, incidents, telemetry, teams, dispatches and audit history. The old hosted-platform files are not required to run this version.
+
+
+## What this project demonstrates
+
+- Role-ready authenticated command-center workflow
+- PostgreSQL-backed incident lifecycle
+- Live sensor telemetry and risk calculation
+- Emergency team availability and dispatch lifecycle
+- Audit logging for operational actions
+- Health endpoint for local service verification
+- Responsive command-center UI suitable for academic demonstration
+
+## Important
+
+This is an academic emergency-response simulation, not a certified real-world emergency service. Do not use the demo credentials or simulated sensor values for actual emergency decisions.
