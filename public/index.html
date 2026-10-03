@@ -132,7 +132,7 @@ function openModal(mode){$('#modal').classList.add('open');$('#modal').dataset.m
 function closeModal(){$('#modal').classList.remove('open');$('#commandForm').reset();}
 $('#newIncidentBtn').onclick=()=>openModal('incident');$('#newDispatchBtn').onclick=()=>openModal('dispatch');$('#modalClose').onclick=closeModal;$('#cancelModal').onclick=closeModal;$('#modal').onclick=e=>{if(e.target.id==='modal')closeModal()};
 $('#commandForm').onsubmit=async e=>{e.preventDefault();const mode=$('#modal').dataset.mode;const m=$('#formMessage');m.textContent='Saving…';try{if(mode==='incident')await api('/incidents',{method:'POST',body:JSON.stringify({title:$('#fTitle').value.trim(),location:$('#fLocation').value.trim(),severity:$('#fSeverity').value})});else await api('/dispatches',{method:'POST',body:JSON.stringify({mission:$('#fMission').value.trim(),destination:$('#fDestination').value.trim(),priority:$('#fPriority').value,teamId:$('#fTeam').value})});m.className='form-message success';m.textContent='Operation recorded successfully.';await refreshAll();setTimeout(closeModal,600);}catch(err){m.className='form-message error';m.textContent=err.message;}};
-$('#refreshBtn').onclick=refreshAll;$('#logoutBtn').onclick=async()=>{await window.hatchable.auth.signOut();location.href='/login'};
+$('#refreshBtn').onclick=refreshAll;$('#logoutBtn').onclick=async()=>{await fetch('/api/logout',{method:'POST'});location.href='/login'};
 document.querySelectorAll('nav a').forEach(a=>a.onclick=()=>document.querySelectorAll('nav a').forEach(x=>x.classList.remove('active'))||a.classList.add('active'));
 (async()=>{if(await loadUser())await refreshAll();})();
 </script>
