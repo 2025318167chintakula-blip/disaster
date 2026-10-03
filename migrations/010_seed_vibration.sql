@@ -1,1 +1,0 @@
-INSERT INTO sensors (name, category, value, unit, status, location, battery) SELECT 'Vibration Sensor S-118','VIBRATION','0.72','g','ONLINE','Zone 7',76 WHERE NOT EXISTS (SELECT 1 FROM sensors WHERE name = 'Vibration Sensor S-118')
