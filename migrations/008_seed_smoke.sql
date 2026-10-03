@@ -1,1 +1,0 @@
-INSERT INTO sensors (name, category, value, unit, status, location, battery) SELECT 'Smoke Detector S-221','SMOKE','18','ppm','ONLINE','Industrial Zone B',88 WHERE NOT EXISTS (SELECT 1 FROM sensors WHERE name = 'Smoke Detector S-221')
