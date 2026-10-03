@@ -163,7 +163,7 @@ app.get("/api/risk",requireAuth(async(req,res)=>{
   const critical=incidents.rows.filter(x=>x.severity==="CRITICAL").length,warning=incidents.rows.filter(x=>x.severity==="WARNING").length;
   const score=Math.min(100,Math.round(18+water*.42+vibration*18+smoke*.25+gas*.5+critical*12+warning*5)),level=score>=75?"HIGH":score>=50?"ELEVATED":score>=30?"MODERATE":"LOW";
   const drivers=[]; if(water>=70)drivers.push("High water-level telemetry"); if(vibration>=.6)drivers.push("Elevated vibration telemetry"); if(smoke>=40)drivers.push("Increased smoke concentration"); if(gas>=10)drivers.push("Increased gas concentration"); if(critical)drivers.push(`${critical} active critical incident${critical>1?"s":""}`); if(!drivers.length)drivers.push("No major threshold breaches detected");
-  res.json({score,level,drivers,calculated_at:new Date().toISOString()});
+  res.json({score,level,drivers,calculated_at:new Date().toISOString(),metrics:{water,vibration,smoke,gas,critical,warning}});
 }));
 
 app.use((err,req,res,next)=>{console.error(err);res.status(500).json({error:"Server error. Check the terminal for details."});});
