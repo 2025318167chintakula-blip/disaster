@@ -234,7 +234,7 @@ app.get("/api/reports",requireAuth(async(req,res)=>{
 }));
 
 app.get("/api/activity",requireAuth(async(req,res)=>{const {rows}=await pool.query("SELECT action,entity,details,created_at FROM audit_logs ORDER BY created_at DESC LIMIT 30");res.json({activity:rows});}));
-app.get("/api/audit",requireRole("ADMIN","OPERATOR")(async(req,res)=>{const {rows}=await pool.query("SELECT a.*,u.name user_name,u.email FROM audit_logs a LEFT JOIN app_users u ON u.id::text=a.user_id OR u.id=a.user_id ORDER BY a.created_at DESC LIMIT 100");res.json({audit:rows});}));
+app.get("/api/audit",requireRole("ADMIN","OPERATOR")(async(req,res)=>{const {rows}=await pool.query("SELECT a.*,u.name user_name,u.email FROM audit_logs a LEFT JOIN app_users u ON u.id::text=a.user_id ORDER BY a.created_at DESC LIMIT 100");res.json({audit:rows});}));
 
 app.get("/api/alerts",requireAuth(async(req,res)=>{const {rows}=await pool.query("SELECT * FROM alerts WHERE status='ACTIVE' AND (expires_at IS NULL OR expires_at>NOW()) ORDER BY created_at DESC LIMIT 30");res.json({alerts:rows});}));
 app.post("/api/alerts",requireRole("ADMIN","OPERATOR")(async(req,res)=>{
