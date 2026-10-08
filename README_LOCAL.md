@@ -1,12 +1,12 @@
 # Sentinel DM — Integrated Disaster Management, Risk Monitoring & Emergency Response Platform
 
-Sentinel DM is a full-stack academic disaster-management command center upgraded from the original project architecture:
+Sentinel DM is a full-stack disaster-management command center built on the existing project architecture:
 
 **Browser → Node.js / Express → PostgreSQL**
 
 It demonstrates how incident reporting, simulated environmental telemetry, risk assessment, response-team coordination, mission dispatch, emergency alerts, analytics and audit tracking can be combined into one operational workflow.
 
-> **Academic simulation:** sensor telemetry, locations and emergency records are demo data. This project does not claim official government, NDRF, satellite or real-time emergency integrations.
+> **Simulation environment:** sensor telemetry, locations and emergency records are demo data. This project does not claim official government, NDRF, satellite or real-time emergency integrations.
 
 ## 1. Problem Statement
 
@@ -310,9 +310,9 @@ Open:
 - Email: `demo@sentinel.local`
 - Password: `local-demo-password`
 
-Change the demo credential before using the application outside a classroom environment.
+Change the demo credential before using the application in a production environment.
 
-## 18. Recommended Viva Demonstration
+## 18. Recommended Demonstration
 
 1. Login as the demo operator.
 2. Show the Emergency Operations Center dashboard.
@@ -330,7 +330,7 @@ Change the demo credential before using the application outside a classroom envi
 14. Open Reports & Analytics.
 15. Show preparedness, emergency contacts and the local safety assistant.
 
-This gives a complete end-to-end story without manual database editing.
+This gives a complete end-to-end operational workflow without manual database editing.
 
 ## 19. Security Notes
 
@@ -375,4 +375,4 @@ The project combines:
 
 **Incident Management + Sensor Monitoring + Risk Assessment + Response Teams + Mission Dispatch + Emergency Alerts + Analytics + Audit Tracking**
 
-This is the central story to use during the final-year project presentation.
+This is the central story of the platform.
