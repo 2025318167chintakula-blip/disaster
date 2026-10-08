@@ -16,6 +16,19 @@ CREATE TABLE IF NOT EXISTS sessions (
   expires_at TIMESTAMPTZ NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+CREATE TABLE IF NOT EXISTS response_teams (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  specialty TEXT NOT NULL,
+  location TEXT NOT NULL,
+  latitude DOUBLE PRECISION,
+  longitude DOUBLE PRECISION,
+  status TEXT NOT NULL DEFAULT 'AVAILABLE' CHECK (status IN ('AVAILABLE','DEPLOYED','EN ROUTE','OFFLINE')),
+  members INTEGER NOT NULL DEFAULT 4,
+  current_mission TEXT,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE IF NOT EXISTS incidents (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL,
@@ -46,19 +59,6 @@ CREATE TABLE IF NOT EXISTS sensors (
   battery INTEGER NOT NULL DEFAULT 100 CHECK (battery BETWEEN 0 AND 100),
   threshold_warning DOUBLE PRECISION,
   threshold_critical DOUBLE PRECISION,
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-);
-
-CREATE TABLE IF NOT EXISTS response_teams (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  specialty TEXT NOT NULL,
-  location TEXT NOT NULL,
-  latitude DOUBLE PRECISION,
-  longitude DOUBLE PRECISION,
-  status TEXT NOT NULL DEFAULT 'AVAILABLE' CHECK (status IN ('AVAILABLE','DEPLOYED','EN ROUTE','OFFLINE')),
-  members INTEGER NOT NULL DEFAULT 4,
-  current_mission TEXT,
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
