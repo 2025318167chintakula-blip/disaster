@@ -158,6 +158,21 @@ ALTER TABLE dispatches ADD COLUMN IF NOT EXISTS started_at TIMESTAMPTZ;
 ALTER TABLE dispatches ADD COLUMN IF NOT EXISTS completed_at TIMESTAMPTZ;
 ALTER TABLE dispatches ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW();
 
+ALTER TABLE app_users DROP CONSTRAINT IF EXISTS app_users_role_check;
+ALTER TABLE app_users ADD CONSTRAINT app_users_role_check CHECK (role IN ('ADMIN','OPERATOR','RESPONDER'));
+ALTER TABLE incidents DROP CONSTRAINT IF EXISTS incidents_severity_check;
+ALTER TABLE incidents ADD CONSTRAINT incidents_severity_check CHECK (severity IN ('CRITICAL','WARNING','INFO'));
+ALTER TABLE incidents DROP CONSTRAINT IF EXISTS incidents_status_check;
+ALTER TABLE incidents ADD CONSTRAINT incidents_status_check CHECK (status IN ('ACTIVE','UNDER RESPONSE','RESOLVED'));
+ALTER TABLE sensors DROP CONSTRAINT IF EXISTS sensors_status_check;
+ALTER TABLE sensors ADD CONSTRAINT sensors_status_check CHECK (status IN ('ONLINE','OFFLINE','MAINTENANCE'));
+ALTER TABLE response_teams DROP CONSTRAINT IF EXISTS response_teams_status_check;
+ALTER TABLE response_teams ADD CONSTRAINT response_teams_status_check CHECK (status IN ('AVAILABLE','DEPLOYED','EN ROUTE','OFFLINE'));
+ALTER TABLE dispatches DROP CONSTRAINT IF EXISTS dispatches_priority_check;
+ALTER TABLE dispatches ADD CONSTRAINT dispatches_priority_check CHECK (priority IN ('LOW','NORMAL','HIGH','CRITICAL'));
+ALTER TABLE dispatches DROP CONSTRAINT IF EXISTS dispatches_status_check;
+ALTER TABLE dispatches ADD CONSTRAINT dispatches_status_check CHECK (status IN ('PENDING','ACTIVE','EN ROUTE','COMPLETED'));
+
 UPDATE app_users SET role='OPERATOR' WHERE role IS NULL;
 UPDATE incidents SET updated_at=created_at WHERE updated_at IS NULL;
 UPDATE dispatches SET updated_at=created_at WHERE updated_at IS NULL;
