@@ -98,7 +98,7 @@ app.get("/api/dashboard",requireAuth(async(req,res)=>{
     pool.query("SELECT COUNT(*)::int count FROM alerts WHERE status='ACTIVE' AND (expires_at IS NULL OR expires_at>NOW())")
   ]);
   const risk=await calculateRisk(false);
-  res.json({active_incidents:a.rows[0].count,critical_incidents:c.rows[0].count,sensors_online:s.rows[0].count,available_teams:t.rows[0].count,active_dispatches:d.rows[0].count,active_alerts:alerts.rows[0].count,risk});
+  res.json({active_incidents:a.rows[0].count,critical_incidents:c.rows[0].count,sensors_online:s.rows[0].count,available_teams:t.rows[0].count,response_teams:t.rows[0].count,active_dispatches:d.rows[0].count,active_alerts:alerts.rows[0].count,risk});
 }));
 
 app.get("/api/incidents",requireAuth(async(req,res)=>{
@@ -233,6 +233,7 @@ app.get("/api/reports",requireAuth(async(req,res)=>{
   res.json({incidents_week:week.rows[0].count,avg_response_minutes:Number(avg.rows[0].value||0),missions_completed:completed.rows[0].count,resource_utilization:Number(util.rows[0].value||0),by_type:byType.rows,by_severity:bySeverity.rows,over_time:overTime.rows,team_utilization:teamUtil.rows,sensor_status:sensorStatus.rows});
 }));
 
+app.get("/api/analytics",requireAuth(async(req,res)=>{const [types,severity,trend]=await Promise.all([pool.query("SELECT disaster_type name,COUNT(*)::int value FROM incidents GROUP BY disaster_type ORDER BY value DESC"),pool.query("SELECT severity name,COUNT(*)::int value FROM incidents GROUP BY severity ORDER BY value DESC"),pool.query("SELECT TO_CHAR(DATE_TRUNC('day',created_at),'DD Mon') label,COUNT(*)::int value FROM incidents WHERE created_at>=NOW()-INTERVAL '30 days' GROUP BY 1 ORDER BY MIN(created_at)")]);res.json({by_type:types.rows,by_severity:severity.rows,over_time:trend.rows});}));
 app.get("/api/activity",requireAuth(async(req,res)=>{const {rows}=await pool.query("SELECT action,entity,details,created_at FROM audit_logs ORDER BY created_at DESC LIMIT 30");res.json({activity:rows});}));
 app.get("/api/audit",requireRole("ADMIN","OPERATOR")(async(req,res)=>{const {rows}=await pool.query("SELECT a.*,u.name user_name,u.email FROM audit_logs a LEFT JOIN app_users u ON u.id::text=a.user_id ORDER BY a.created_at DESC LIMIT 100");res.json({audit:rows});}));
 
