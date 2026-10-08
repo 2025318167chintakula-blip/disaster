@@ -216,9 +216,9 @@ app.get("/api/risk",requireAuth(async(req,res)=>res.json(await calculateRisk(tru
 app.get("/api/risk/history",requireAuth(async(req,res)=>{const {rows}=await pool.query("SELECT score,level,drivers,created_at FROM risk_history ORDER BY created_at DESC LIMIT 50");res.json({history:rows});}));
 
 app.get("/api/reports",requireAuth(async(req,res)=>{
-  const from=clean(req.query.from,30),to=clean(req.query.to,30);
-  const where=from?"WHERE created_at >= $1 AND created_at < COALESCE($2::timestamptz,NOW())":"WHERE created_at >= NOW()-INTERVAL '30 days'";
-  const params=from?[from,to||null]:[];
+  const from=clean(req.query.from,30),to=clean(req.query.to,30),days=Math.max(1,Math.min(365,Number(req.query.days||30)));
+  const where=from?"WHERE created_at >= $1 AND created_at < COALESCE($2::timestamptz,NOW())":"WHERE created_at >= NOW()-($1 || ' days')::interval";
+  const params=from?[from,to||null]:[String(days)];
   const [week,avg,completed,util,byType,bySeverity,overTime,teamUtil,sensorStatus]=await Promise.all([
     pool.query("SELECT COUNT(*)::int count FROM incidents WHERE created_at>=NOW()-INTERVAL '7 days'"),
     pool.query("SELECT COALESCE(ROUND(AVG(EXTRACT(EPOCH FROM (d.started_at-i.created_at))/60)::numeric,1),0) value FROM dispatches d JOIN incidents i ON i.id=d.incident_id WHERE d.started_at IS NOT NULL AND d.created_at>=NOW()-INTERVAL '30 days'"),
